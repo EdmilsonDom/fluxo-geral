@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./imagem/sew1.PNG">
+    <title>Gerenciamento de Veículos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: url('./imagem/entrada.PNG') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #000;
+        }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        input, select, button {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            flex: 1 1 calc(48% - 20px);
+            box-sizing: border-box;
+            transition: box-shadow 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.8);
+            border-color: #007bff;
+        }
+        button {
+            background-color: #006400;
+            color: white;
+            cursor: pointer;
+            flex: 1 1 100%;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        #exportar {
+            background-color: #006400;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #ff1a1a;
+        }
+    </style>
+</head>
+<body>
+    <img src="./imagem/sew2.PNG" alt="Logo" height="150px" style="position: absolute; left: 20px; top: 20px;">
+    <div class="container">
+        <h1>FLUXO DE VEÍCULOS</h1>
+        <form id="form">
+            <input type="text" id="Fornecedor" placeholder="Fornecedor" required>
+            <input type="time" id="Entrada" required>
+            <input type="time" id="Saida" disabled required>
+            <input type="date" id="Data" required>
+            <input type="text" id="Re" placeholder="RE" required>
+            <input type="text" id="Placa" placeholder="Placa" required>
+            <input type="text" id="Motorista" placeholder="Motorista" required>
+            <select id="status" required>
+                <option value="">Status</option>
+                <option value="Na Doca">Na Doca</option>
+                <option value="Saindo">Saindo</option>
+            </select>
+            <button type="submit">Adicionar</button>
+            <button type="button" id="exportar">Exportar para CSV</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>FORNECEDOR</th>
+                    <th>ENTRADA</th>
+                    <th>SAÍDA</th>
+                    <th>DATA</th>
+                    <th>RE</th>
+                    <th>PLACA</th>
+                    <th>MOTORISTA</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+            <tbody id="fluxodeveiculos">
+                <!-- As entradas serão adicionadas aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('status').addEventListener('change', function() {
+            const entrada = document.getElementById('Entrada');
+            const saida = document.getElementById('Saida');
+            const exportarBtn = document.getElementById('exportar');
+
+            if (this.value === 'Saindo') {
+                entrada.disabled = true;
+                entrada.value = '';
+                saida.disabled = false;
+                exportarBtn.style.backgroundColor = '#006400';
+            } else if (this.value === 'Na Doca') {
+                entrada.disabled = false;
+                saida.disabled = true;
+                saida.value = '';
+                exportarBtn.style.backgroundColor = '#cf1d02'; // Cor do botão exportar
+            }
+        });
+
+        document.getElementById('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const fornecedor = document.getElementById('Fornecedor').value;
+            const entrada = document.getElementById('Entrada').value;
+            const saida = document.getElementById('Saida').value;
+            const data = document.getElementById('Data').value;
+            const re = document.getElementById('Re').value;
+            const placa = document.getElementById('Placa').value;
+            const motorista = document.getElementById('Motorista').value;
+            const status = document.getElementById('status').value;
+
+            // Verifica se o status é "Na Doca" e se a placa e o motorista estão preenchidos
+            if (status === 'Na Doca' && (!placa || !motorista)) {
+                alert('Por favor, preencha o nome do motorista e a placa.');
+                return;
+            }
+
+            const fluxodeveiculos = document.getElementById('fluxodeveiculos');
+            const novaLinha = fluxodeveiculos.insertRow();
+
+            novaLinha.innerHTML = `
+                <td>${fornecedor}</td>
+                <td>${entrada}</td>
+                <td>${saida}</td>
+                <td>${data}</td>
+                <td>${re}</td>
+                <td>${placa}</td>
+                <td>${motorista}</td>
+                <td>${status}</td>
+                <td><button class="delete-btn" onclick="deleteRow(this)">Excluir</button></td>
+            `;
+
+            document.getElementById('form').reset();
+            document.getElementById('Entrada').disabled = false;
+            document.getElementById('Saida').disabled = true;
+        });
+
+        function deleteRow(button) {
+            const row = button.parentElement.parentElement;
+            row.remove();
+        }
+
+        document.getElementById('exportar').addEventListener('click', function() {
+            let csv = 'Fornecedor,Entrada,Saída,Data,RE,Placa,Motorista,Status\n';
+            const rows = document.querySelectorAll('#fluxodeveiculos tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowData = Array.from(cells).slice(0, -1).map(cell => cell.textContent).join(',');
+                if (rowData) csv += rowData + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'fluxo_de_veiculos.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+</body>
+</html>
