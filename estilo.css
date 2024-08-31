@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: rgb(10, 10, 10);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(22, 21, 21, 0.007);
+}
+
+company{
+    color: #070606;
+}
+
+h1 {
+    margin-bottom: 40px;
+}
+
+label {
+    display: block;
+    margin-bottom: 50px;
+    
+}
+formulario {
+    width: 768px;
+        
+    font-size: 22px; /* Aumenta o tamanho do texto em telas maiores */
+        
+    }
+    
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #313332ad;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Animação do caminhão */
+#truck-animation {
+    position:absolute;
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+
+
+#moving-truck {
+    position: absolute;
+    left: -200px;
+    width: 150px;
+    transform:translateY(0px);
+    height: auto;
+    animation: moveTruck 5s ease-in-out infinite;
+   
+}
+
+   
+
+@keyframes moveTruck {
+    0% {
+        transform:translatex(0px);
+}
+    50% {
+        transform:translateY(-30px);
+    
+}
+    100%{
+        transform:translateY(0px);
+    }
+    
+}
+.hidden {
+    display: none;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+
