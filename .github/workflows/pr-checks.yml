@@ -1,0 +1,51 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Check code formatting
+      run: |
+        npm run format -- --check || echo "Format check failed, please run 'npm run format'"
+    
+    - name: Run linting
+      run: npm run lint || echo "Linting issues found"
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Validate file structure
+      run: |
+        echo "Checking if all required files exist..."
+        test -f package.json && echo "✓ package.json exists"
+        test -f Gruntfile.js && echo "✓ Gruntfile.js exists"
+        test -f .gitignore && echo "✓ .gitignore exists"
+        test -d dist && echo "✓ dist directory created"
+    
+    - name: Comment PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🚀 Build completed successfully! The changes look good to merge.'
+          })

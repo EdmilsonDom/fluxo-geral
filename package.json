@@ -1,0 +1,48 @@
+{
+  "name": "fluxo-geral",
+  "version": "1.0.0",
+  "description": "Sistema de gerenciamento de veículos e fluxo geral",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 3000",
+    "dev": "http-server -p 3000 -o",
+    "build": "grunt",
+    "test": "echo \"No tests specified\" && exit 0",
+    "lint": "eslint *.js",
+    "format": "prettier --write *.{js,css,html}",
+    "serve": "http-server dist -p 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EdmilsonDom/fluxo-geral.git"
+  },
+  "keywords": [
+    "vehicle-management",
+    "web",
+    "javascript",
+    "html",
+    "css"
+  ],
+  "author": "EdmilsonDom",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EdmilsonDom/fluxo-geral/issues"
+  },
+  "homepage": "https://github.com/EdmilsonDom/fluxo-geral#readme",
+  "devDependencies": {
+    "grunt": "^1.6.1",
+    "grunt-contrib-concat": "^2.1.0",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-cssmin": "^5.0.0",
+    "grunt-contrib-htmlmin": "^3.1.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.0.0",
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
